@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Drum kit</title>
+    <script type="text/javascript" src="script.js"></script>
+    <link rel=icon href="img/favicon.ico" sizes="16x16" type="image/ico">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="sounds">
+        <div class="soundBtn">
+            <audio src="sounds/clap.wav" id="KeyA"></audio>
+            <span>A</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/boom.wav" id="KeyS"></audio>
+            <span>S</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/hihat.wav" id="KeyD"></audio>
+            <span>D</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/kick.wav" id="KeyF"></audio>
+            <span>F</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/openhat.wav" id="KeyG"></audio>
+            <span>G</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/ride.wav" id="KeyH"></audio>
+            <span>H</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/snare.wav" id="KeyJ"></audio>
+            <span>J</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/tink.wav" id="KeyK"></audio>
+            <span>K</span>
+        </div>
+        <div class="soundBtn">
+            <audio src="sounds/tom.wav" id="KeyL"></audio>
+            <span>L</span>
+        </div>
+    </div>
+
+    <div id="buttons">
+
+        <button id="recordCh1" class="record">Record ch1</button>
+        <button id="recordCh2" class="record">Record ch2</button>
+        <button id="recordCh3" class="record">Record ch3</button>
+        <button id="recordCh4" class="record">Record ch4</button>
+
+        <button id="playCh1" class="record">Play ch1</button><br>
+        <button id="playCh2" class="record">Play ch2</button><br>
+        <button id="playCh3" class="record">Play ch3</button><br>
+        <button id="playCh4" class="record">Play ch4</button><br>
+
+        <button id="playAll">Play</button>
+    </div>
+</body>
+
+</html>
