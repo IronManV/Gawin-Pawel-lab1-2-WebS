@@ -79,6 +79,7 @@ function change4() {
     aaa = 4
 }
 
+
 function record(e) {
     if (startTime === undefined)
         startTime = Date.now()

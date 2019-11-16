@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple PS</title>
+    <link rel="stylesheet" href="simple-ps.css">
+    <script src="brush.js" type="text/javascript"></script>
+    <script src="photoshop.js" type="text/javascript"></script>
+    <script src="images.js" type="text/javascript"></script>
+    <script src="filter.js" type="text/javascript"></script>
+    <script src="simple-ps.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <div id="actionNav" class="actionNav">
+        <button id="drawBtn">
+            <img src="img/draw+edit+pencil+write+icon-1320085880523061494_64.png">
+            <p class="navP">Draw</p>
+        </button>
+        <button id="filtersBtn">
+            <img src="img/range+refine+scale+icon-1320085759690147153_64.png">
+            <p class="navP">Filters</p>
+        </button>
+        <div id="btnFile">
+            <input type="file" id="fileInput" accept="image/*">
+            <label for='fileInput'>
+                <img src="img/image+24px-131985227169316703_64.png">
+                <p class="navP">Choose a Photo</p>
+            </label>
+        </div>
+
+    </div>
+
+    <div id="draw" class="actionNav">
+        <button id="backFromDraw">
+            <img src="img/back+left+icon-1320196809275731487_64.png" alt="Back arrow image">
+            <p class="navP">Back</p>
+        </button>
+        <button id="squareBtn">
+            <img src="img/cube+music+square+stop+icon-1320166338180006916_64.png" alt="Square image">
+            <p class="navP">Square</p>
+        </button>
+        <button id="circleBtn">
+            <img src="img/dot+record+round+icon-1320166339214192336_64.png" alt="Circle image">
+            <p class="navP">Circle</p>
+        </button>
+        <button id="resetDraw">
+            <img src="img/reload-131979013351159611_64.png" alt="Reset image">
+            <p class="navP">Reset</p>
+        </button>
+
+    </div>
+
+    <div id="filter" class="actionNav">
+        <button id="backFromFilter">
+            <img src="img/back+left+icon-1320196809275731487_64.png" alt="Back arrow image">
+            <p class="navP">Back</p>
+        </button>
+        <div class="slidecontainer">
+            <p class="filtersP">Darken</p>
+            <input type="range" min="0" max="200" value="0" class="slider" id="darken">
+        </div>
+        <div class="slidecontainer">
+            <p class="filtersP">Brighten</p>
+            <input type="range" min="0" max="200" value="0" class="slider" id="brightness">
+        </div>
+        <div class="slidecontainer">
+            <p class="filtersP">Contrast</p>
+            <input type="range" min="0" max="60" value="0" class="slider" id="contrast">
+        </div>
+        <div class="slidecontainer">
+            <p class="filtersP">Saturation</p>
+            <input type="range" min="1" max="100" value="0" class="slider" id="saturation">
+        </div>
+        <button id="blur" class="filtersBtn navP ">Blur</button>
+        <button id="sepia" class="filtersBtn navP ">Sepia</button>
+        <button id="blackWhite" class="filtersBtn navP ">Black & White</button>
+        <button id="resetFilter">
+            <img src="img/reload-131979013351159611_64.png" alt="Reset image">
+            <p class="navP">Reset</p>
+        </button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
