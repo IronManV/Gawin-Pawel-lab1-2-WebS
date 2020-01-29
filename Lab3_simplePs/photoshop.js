@@ -12,6 +12,7 @@ class Photoshop {
         const y = e.touches[0].clientY - this.canvas.offsetTop
         // pobierz pędzel
         this.brushShape = new Brush(this.brushShapeName, this.ctx, x, y)
+
     }
 
     setBrushShape(brushShape) {

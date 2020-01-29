@@ -95,9 +95,6 @@ class Filter {
         }
         this.applyFilter(canvasData)
     }
-    reset() {
-
-    }
     applyFilter(canvasData) {
         this.ctx.putImageData(canvasData, 0, 0)
     }
