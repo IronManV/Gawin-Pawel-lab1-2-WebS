@@ -57,6 +57,7 @@ function createNote() {
 
     noteArray.push(note);
     pushToLocalStorage();
+    location.reload();
     return note;
 }
 
