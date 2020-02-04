@@ -1,10 +1,9 @@
 class Board {
     constructor() {
-        this.numberOfHoles = 5;
+        this.numberOfHoles = 4;
+        this.currentHoleId = 0;
         this.holes = [];
         this.ball;
-        this.currentTargetHoleId = 0;
-        this.currentTargetHoleColor = 'grey'
         this.startTime;
         this.board = document.querySelector('#drawBoard');
         this.boardSize = {
@@ -19,12 +18,11 @@ class Board {
         this.startBtn = document.querySelector('#startBtn');
         this.animateArrowFunction = () => this.animate();
         this.setStartTimeArrowFunction = () => this.setStartTime();
-        this.changeSpeedArrowFunction = (e) => this.changeSpeed(e);
+        this.changeSpeedArrowFunction = (e) => this.changeBallSpeed(e);
         window.addEventListener('deviceorientation', this.changeSpeedArrowFunction);
         this.startBtn.addEventListener('click', this.animateArrowFunction);
         this.startBtn.addEventListener('click', this.setStartTimeArrowFunction);
-        this.timerStart;
-        this.isGameFinised = false;
+        this.isFinished = false;
     }
     setStartTime() {
         this.startBtn.removeEventListener('click', this.animateArrowFunction);
@@ -34,28 +32,30 @@ class Board {
         document.querySelector('#board').style.filter = 'blur(0px)';
     }
     animate() {
-        this.moveBall();
+        if (!this.isFinished)
+            this.moveBall();
         window.requestAnimationFrame(this.animateArrowFunction);
     }
-    changeSpeed(event) {
+    changeBallSpeed(event) {
         this.speedX = event.alpha * this.ball.speed;
         this.speedY = (event.beta - 90) * this.ball.speed;
     }
     moveBall() {
         let newTop = this.ball.top + this.speedY;
+        if (newTop < 0 || newTop > this.boardSize.height - this.ball.size)
+            this.loseGame();
         this.ball.top = Math.min(newTop, this.boardSize.height - this.ball.size);
         this.ball.top = Math.max(this.ball.top, this.board.clientTop);
 
         let newLeft = this.ball.left + this.speedX;
+        if (newLeft < 0 || newLeft > this.boardSize.width - this.ball.size)
+            this.loseGame();
         this.ball.left = Math.min(newLeft, this.boardSize.width - this.ball.size);
         this.ball.left = Math.max(this.ball.left, this.board.clientLeft);
 
         this.updateHolesAndGameStates();
         this.setBallPosition();
         this.timer();
-    }
-    stopMovingBall() {
-        window.removeEventListener('deviceorientation', this.changeSpeedArrowFunction);
     }
     updateHolesAndGameStates() {
         this.holes.forEach(hole => {
@@ -90,13 +90,13 @@ class Board {
         this.board.appendChild(this.ball.htmlElement);
     }
     setNewTargetHole() {
-        if (this.currentTargetHoleId != this.numberOfHoles) {
+        if (this.currentHoleId != this.numberOfHoles) {
             this.holes.forEach(hole => {
                 hole.htmlElement.setAttributeNS(null, 'fill', hole.color);
                 hole.isCurrentTarget = false;
             });
-            this.holes[this.currentTargetHoleId].htmlElement.setAttributeNS(null, 'fill', this.currentTargetHoleColor);
-            this.holes[this.currentTargetHoleId].isCurrentTarget = true;
+            this.holes[this.currentHoleId].htmlElement.setAttributeNS(null, 'fill', 'grey');
+            this.holes[this.currentHoleId].isCurrentTarget = true;
         }
     }
     generateBoard() {
@@ -105,7 +105,7 @@ class Board {
             let svgHole = hole.createHole();
             hole.htmlElement = svgHole;
 
-            this.calculateNewCircularElementPosition(hole);
+            this.newHolePosition(hole);
 
             svgHole.setAttributeNS(null, 'cx', hole.left + hole.radius);
             svgHole.setAttributeNS(null, 'cy', hole.top + hole.radius);
@@ -114,27 +114,26 @@ class Board {
             this.holes.push(hole);
 
             if (hole.id == 0) {
-                this.currentTargetHoleId = hole.id;
+                this.currentHoleId = hole.id;
                 this.setNewTargetHole();
             }
         }
     }
 
-    calculateNewCircularElementPosition(circularElement) {
-        circularElement.left = this.generateRandomNumber(this.board.clientLeft, this.boardSize.width - circularElement.size);
-        circularElement.top = this.generateRandomNumber(this.board.clientTop, this.boardSize.height - circularElement.size);
-        circularElement.centerCoordinates.x = circularElement.left + circularElement.radius;
-        circularElement.centerCoordinates.y = circularElement.top + circularElement.radius;
+    newHolePosition(hole) {
+        hole.left = this.generateRandomNumber(this.board.clientLeft, this.boardSize.width - hole.size);
+        hole.top = this.generateRandomNumber(this.board.clientTop, this.boardSize.height - hole.size);
+        hole.centerCoordinates.x = hole.left + hole.radius;
+        hole.centerCoordinates.y = hole.top + hole.radius;
     }
 
     isOverlapping(circularElement, existingHole, minimumDistance) {
-        let sqDistance, distance;
+        let distance;
         let y = Math.abs((circularElement.top + circularElement.radius) - existingHole.centerCoordinates.y);
         let x = Math.abs((circularElement.left + circularElement.radius) - existingHole.centerCoordinates.x);
 
 
-        sqDistance = Math.pow(x, 2) + Math.pow(y, 2);
-        distance = Math.sqrt(sqDistance);
+        distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         if (distance < minimumDistance)
             return true;
         return false;
@@ -151,21 +150,19 @@ class Board {
         let resultDiv = document.querySelector('#resultBox')
         resultDiv.innerHTML = text;
         resultDiv.setAttribute('class', 'won');
-        this.stopMovingBall();
         document.querySelector('#board').style.filter = 'blur(50px)';
-        this.isGameFinised = true;
+        this.isFinished = true;
     }
     loseGame() {
         let text = "You lose";
         let resultDiv = document.querySelector('#resultBox')
         resultDiv.innerHTML = text;
         resultDiv.setAttribute('class', 'lose');
-        this.stopMovingBall();
         document.querySelector('#board').style.filter = 'blur(50px)';
-        this.isGameFinised = true;
+        this.isFinished = true;
     }
     timer() {
-        if (!this.isGameFinised) {
+        if (!this.isFinished) {
             let currentTime = new Date().getTime();
             document.querySelector('#timer').innerHTML = ((currentTime - this.startTime) / 1000).toFixed(2) + 's';
         }
